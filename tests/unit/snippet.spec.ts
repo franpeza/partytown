@@ -31,7 +31,10 @@ test('service worker iframe, lib and debug config', ({ win, document, navigator,
 
   snippet(win, document, navigator, top, false);
 
-  assert.equal(navigator.$serviceWorkerUrl, '/my-custom-location/debug/partytown-sw.js');
+  assert.equal(
+    navigator.$serviceWorkerUrl,
+    '/my-custom-location/debug/partytown-sw.js?v=_VERSION_'
+  );
   assert.equal(navigator.$serviceWorkerOptions, { scope: '/my-custom-location/debug/' });
 
   const iframe = document.body.querySelector('iframe')!;
@@ -46,7 +49,7 @@ test('service worker iframe, defaults', ({ win, document, navigator, top }) => {
 
   snippet(win, document, navigator, top, false);
 
-  assert.equal(navigator.$serviceWorkerUrl, '/~partytown/partytown-sw.js');
+  assert.equal(navigator.$serviceWorkerUrl, '/~partytown/partytown-sw.js?v=_VERSION_');
   assert.equal(navigator.$serviceWorkerOptions, { scope: '/~partytown/' });
 
   const iframe = document.body.querySelector('iframe')!;

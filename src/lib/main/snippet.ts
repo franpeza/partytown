@@ -45,7 +45,7 @@ export function snippet(
           } else if (nav.serviceWorker) {
             // service worker support
             nav.serviceWorker
-              .register(libPath + (config!.swPath || 'partytown-sw.js'), {
+              .register(libPath + (config!.swPath || 'partytown-sw.js?v=_VERSION_'), {
                 scope: libPath,
               })
               .then(function (swRegistration) {
