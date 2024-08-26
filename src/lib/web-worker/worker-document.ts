@@ -14,7 +14,6 @@ import {
   getOrCreateNodeInstance,
 } from './worker-constructors';
 import { createEnvironment } from './worker-environment';
-import { createWindow } from './worker-window';
 import { debug, definePrototypePropertyDescriptor, randomId, SCRIPT_TYPE } from '../utils';
 import { ABOUT_BLANK, elementStructurePropNames, IS_TAG_REG, WinIdKey } from './worker-constants';
 import { getInstanceStateValue } from './worker-state';
@@ -28,6 +27,15 @@ export const patchDocument = (
   isDocumentImplementation?: boolean
 ) => {
   const DocumentDescriptorMap: PropertyDescriptorMap & ThisType<WorkerNode> = {
+    adoptedStyleSheets: {
+      get(): CSSStyleSheet[] {
+        return getter(this, ['adoptedStyleSheets']);
+      },
+      set(value: CSSStyleSheet[]) {
+        setter(this, ['adoptedStyleSheets'], value);
+      },
+    },
+
     body: {
       get() {
         return env.$body$;
@@ -229,6 +237,12 @@ export const patchDocument = (
 
     readyState: {
       value: 'complete',
+    },
+
+    styleSheets: {
+      get() {
+        return getter(this, ['styleSheets']);
+      },
     },
 
     visibilityState: {

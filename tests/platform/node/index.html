@@ -238,6 +238,34 @@
         </script>
       </li>
 
+      <li>
+        <strong>getAttribute</strong>
+        <code id="testGetAttribute"></code>
+        <script type="text/partytown">
+          (function () {
+            const elm = document.getElementById('testGetAttribute');
+
+            const attribute = elm.getAttribute('id');
+
+            elm.textContent = attribute;
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>setAttribute</strong>
+        <code id="testSetAttribute"></code>
+        <script type="text/partytown">
+          (function () {
+            const elm = document.getElementById('testSetAttribute');
+
+            elm.setAttribute('data-test', 'test');
+
+            elm.textContent = elm.getAttribute('data-test');
+          })();
+        </script>
+      </li>
+
       <script type="text/partytown">
         (function () {
           document.body.className = 'completed';

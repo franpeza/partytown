@@ -100,4 +100,10 @@ test('document', async ({ page }) => {
   const testImages = page.locator('#testDocumentImages');
   const pageUrl = new URL(page.url());
   await expect(testImages).toHaveText(`${pageUrl.origin}/fake.jpg`);
+
+  const testStyleSheets = page.locator('#testStyleSheets');
+  await expect(testStyleSheets).toHaveText('1');
+
+  const testAdoptedStyleSheets = page.locator('#testAdoptedStyleSheets');
+  await expect(testAdoptedStyleSheets).toHaveText('0');
 });

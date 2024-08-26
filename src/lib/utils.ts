@@ -78,10 +78,10 @@ export const SCRIPT_TYPE = `text/partytown`;
 
 export const SCRIPT_TYPE_EXEC = `-x`;
 
-export const defineProperty = (obj: any, memberName: string, descriptor: PropertyDescriptor) =>
+export const defineProperty = <T>(obj: T, memberName: string, descriptor: PropertyDescriptor) =>
   Object.defineProperty(obj, memberName, { ...descriptor, configurable: true });
 
-export const defineConstructorName = (Cstr: any, value: string) =>
+export const defineConstructorName = <T>(Cstr: T, value: string) =>
   defineProperty(Cstr, 'name', {
     value,
   });

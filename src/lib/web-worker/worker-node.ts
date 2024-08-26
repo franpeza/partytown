@@ -1,5 +1,5 @@
 import { cachedTreeProps } from './worker-constructors';
-import { callMethod, setter, sendToMain } from './worker-proxy';
+import { callMethod, setter, sendToMain, getter } from './worker-proxy';
 import {
   CallType,
   NodeName,
@@ -34,8 +34,9 @@ export const createNodeCstr = (
   const config = webWorkerCtx.$config$;
 
   const WorkerNode = defineConstructorName(
-    class extends WorkerBase {
-      appendChild(node: WorkerNode) {
+    class WorkerNode extends WorkerBase implements Node {
+      // @ts-expect-error
+      appendChild<T extends Node & WorkerNode>(node: T): T {
         return this.insertBefore(node, null);
       }
 
@@ -46,7 +47,8 @@ export const createNodeCstr = (
       }
       set href(_: any) {}
 
-      insertBefore(newNode: WorkerNode, referenceNode: Node | null) {
+      // @ts-expect-error
+      insertBefore<T extends Node & WorkerNode>(newNode: T, referenceNode: Node | null): T {
         // ensure the node being added to the window's document
         // is given the same winId as the window it's being added to
         const winId = (newNode[WinIdKey] = this[WinIdKey]);
@@ -101,7 +103,9 @@ export const createNodeCstr = (
       }
 
       get nodeName() {
-        return this[InstanceDataKey] === '#s' ? '#document-fragment' : this[InstanceDataKey];
+        return this[InstanceDataKey] === '#s'
+          ? '#document-fragment'
+          : (this[InstanceDataKey] as string);
       }
 
       get nodeType() {
@@ -110,6 +114,63 @@ export const createNodeCstr = (
 
       get ownerDocument(): Document {
         return env.$document$;
+      }
+
+      getAttribute(attrName: string) {
+        return callMethod(this, ['getAttribute'], [attrName]);
+      }
+
+      setAttribute(attrName: string, value: string) {
+        callMethod(this, ['setAttribute'], [attrName, value]);
+      }
+
+      static get ELEMENT_NODE() {
+        return 1;
+      }
+
+      static get ATTRIBUTE_NODE() {
+        return 2;
+      }
+
+      static get TEXT_NODE() {
+        return 3;
+      }
+
+      static get CDATA_SECTION_NODE() {
+        return 4;
+      }
+
+      static get PROCESSING_INSTRUCTION_NODE() {
+        return 7;
+      }
+
+      static get COMMENT_NODE() {
+        return 8;
+      }
+
+      static get DOCUMENT_NODE() {
+        return 9;
+      }
+
+      static get DOCUMENT_TYPE_NODE() {
+        return 10;
+      }
+
+      static get DOCUMENT_FRAGMENT_NODE() {
+        return 11;
+      }
+
+      // Deprecated constants
+      static get ENTITY_REFERENCE_NODE() {
+        return 5; // Deprecated
+      }
+
+      static get ENTITY_NODE() {
+        return 6; // Deprecated
+      }
+
+      static get NOTATION_NODE() {
+        return 12; // Deprecated
       }
     },
     'Node'

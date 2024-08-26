@@ -33,7 +33,7 @@ test('node', async ({ page }) => {
   await expect(testFragmentChildNodes).toHaveText('1 DIV SPAN fragment');
 
   const testCompareDocumentPosition = page.locator('#testCompareDocumentPosition');
-  const docPosition = parseInt(await testCompareDocumentPosition.textContent(), 10);
+  const docPosition = parseInt((await testCompareDocumentPosition.textContent()) ?? '', 10);
   expect(docPosition).toBeGreaterThanOrEqual(35);
 
   const testBodyParentNode = page.locator('#testBodyParentNode');
@@ -41,4 +41,10 @@ test('node', async ({ page }) => {
 
   const testCachedParentNode = page.locator('#testCachedParentNode');
   await expect(testCachedParentNode).toHaveText('cached-parent-node');
+
+  const testGetAttribute = page.locator('#testGetAttribute');
+  await expect(testGetAttribute).toHaveText('testGetAttribute');
+
+  const testSetAttribute = page.locator('#testSetAttribute');
+  await expect(testSetAttribute).toHaveText('test');
 });

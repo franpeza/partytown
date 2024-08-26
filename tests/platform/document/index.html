@@ -464,6 +464,32 @@
         </script>
       </li>
 
+      <li>
+        <strong>document.styleSheets</strong>
+        <code id="testStyleSheets"></code>
+        <script type="text/partytown">
+          (function () {
+            const elm = document.getElementById('testStyleSheets');
+
+            const styleSheets = document.styleSheets;
+            elm.textContent = styleSheets.length;
+          })();
+        </script>
+      </li>
+
+      <li>
+        <strong>document.adoptedStyleSheets</strong>
+        <code id="testAdoptedStyleSheets"></code>
+        <script type="text/partytown">
+          (function () {
+            const elm = document.getElementById('testAdoptedStyleSheets');
+
+            const adoptedStyleSheets = document.adoptedStyleSheets;
+            elm.textContent = adoptedStyleSheets.length;
+          })();
+        </script>
+      </li>
+
       <script type="text/partytown">
         (function () {
           document.body.classList.add('completed');
